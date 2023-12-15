@@ -1,13 +1,33 @@
 import { Request, Response, Router } from "express";
 import { CharactersService } from "../../domain/services/characters";
 import { Types } from "mongoose";
+import Multer from "multer";
+import EventEmitter from "events";
+const STORAGE = Multer.memoryStorage();
+const UPLOAD = Multer({ storage: STORAGE });
 
-const apiRouter = (charactersService: CharactersService): Router => {
+const apiRouter = (
+  charactersService: CharactersService,
+  eventHandler: EventEmitter
+): Router => {
   const router = Router();
 
   router.get("/", (req: Request, res: Response) => {
     return res.sendStatus(201);
   });
+
+  router.post(
+    "/handouts",
+    UPLOAD.single("file"),
+    async (req: Request, res: Response) => {
+      const image = req?.file?.buffer.toString("base64");
+      if (req?.file?.buffer.buffer) {
+        eventHandler.emit("handout", Buffer.from(req?.file?.buffer.buffer));
+      }
+
+      return res.status(201).json({ image });
+    }
+  );
 
   router.get("/characters", async (req: Request, res: Response) => {
     const characters = await charactersService.getAllCharactersStatus();

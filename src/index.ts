@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "dotenv/config";
+import EventEmitter from "events";
 import AppServer from "./server/app";
 
 import container from "./server/dependencyInjector";
@@ -12,5 +13,12 @@ const DB_PASSWORD = process.env.DB_PASSWORD || "";
 const DB_HOST = process.env.DB_HOST || "";
 
 const mongoDb = container.get<Database>(INTERFACE_TYPES.Database);
-const app = new AppServer(DB_HOST, DB_USERNAME, DB_PASSWORD, mongoDb);
+const eventEmitter = new EventEmitter();
+const app = new AppServer(
+  DB_HOST,
+  DB_USERNAME,
+  DB_PASSWORD,
+  mongoDb,
+  eventEmitter
+);
 app.start(PORT);

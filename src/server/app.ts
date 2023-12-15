@@ -12,6 +12,7 @@ import { INTERFACE_TYPES } from "../domain/types/interfaces";
 import container from "./dependencyInjector";
 import { CharactersService } from "../domain/services/characters";
 import logger from "../infra/logger";
+import EventEmitter from "events";
 
 class AppServer {
   public app: Express;
@@ -20,7 +21,8 @@ class AppServer {
     private host: string,
     private user: string,
     private password: string,
-    public db: Database
+    public db: Database,
+    public eventEmitter: EventEmitter
   ) {
     this.app = express();
     this.wsApp = expressWs(this.app);
@@ -36,7 +38,9 @@ class AppServer {
       INTERFACE_TYPES.CharactersService
     );
 
-    return { charactersService };
+    const eventHandler = new EventEmitter();
+
+    return { charactersService, eventHandler };
   }
 
   public start(port: number) {
@@ -44,9 +48,9 @@ class AppServer {
       logger.info({}, `Running on ${port}`);
       await this.db.connect(this.host, this.user, this.password);
 
-      const { charactersService } = this.resolveDependencies();
-      this.app.use("/api/v1", apiRouter(charactersService));
-      wsRoute(this.wsApp, charactersService);
+      const { charactersService, eventHandler } = this.resolveDependencies();
+      this.app.use("/api/v1", apiRouter(charactersService, eventHandler));
+      wsRoute(this.wsApp, charactersService, eventHandler);
       logger.info({}, "Database connected");
     });
   }
