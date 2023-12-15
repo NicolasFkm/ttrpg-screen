@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "app.ts",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "node --loader ts-node/esm --trace-warnings src/index.ts",
     "watch": "nodemon",
