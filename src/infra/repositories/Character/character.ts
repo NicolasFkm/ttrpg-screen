@@ -1,4 +1,4 @@
-import { Model, Schema, Document } from "mongoose";
+import { Model, Schema, Document, Types } from "mongoose";
 import { Repository } from "../repository";
 import { CharacterSchema } from "./characterSchema";
 import { inject, injectable } from "inversify";
@@ -19,7 +19,7 @@ export class CharacterRepository implements Repository {
     return result as Document[];
   }
 
-  async get(id: Schema.Types.ObjectId): Promise<Document> {
+  async get(id: Types.ObjectId): Promise<Document> {
     const result = await this.model.findOne({ _id: id }).exec();
 
     return result as Document;

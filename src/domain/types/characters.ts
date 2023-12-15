@@ -13,6 +13,8 @@ export type Class = {
 export type Character = {
   _id: ObjectId;
   name: string;
+  avatar: string;
+  initiative: number;
   age?: number;
   conditions?: string[];
   luckPoints?: number;
@@ -24,4 +26,11 @@ export type Character = {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type Stats = {
+  lifePoints?: number;
+  manaPoints?: number;
+  defense?: number;
+  luckPoints?: number;
 };

@@ -2,15 +2,14 @@ import { NextFunction, Request } from "express";
 import { Instance } from "express-ws";
 import { WebSocket } from "ws";
 import { CharactersService } from "../../domain/services/characters";
+import { compose, descend, prop, sortBy, sortWith } from "ramda";
+import logger from "../../infra/logger";
 
 const wsRoute = (expressWs: Instance, charactersService: CharactersService) => {
   expressWs.app.ws(
     "/ws/v1/characters",
     async (ws: WebSocket, req: Request, next: NextFunction) => {
-      console.log("Connected", ws.readyState);
-      ws.on("upgrade", (...args) => {
-        console.log("upgraded", args);
-      });
+      logger.info({}, "Socket Connected");
 
       ws.on("message", async (message, ...args) => {
         const characters = await charactersService.getAllCharactersStatus();
@@ -24,7 +23,7 @@ const wsRoute = (expressWs: Instance, charactersService: CharactersService) => {
 
       ws.on("close", (code, ...args) => {
         clearInterval(job);
-        console.log("Closed Connection", code, args);
+        logger.info({ code, args }, "Closed Connection");
       });
     }
   );

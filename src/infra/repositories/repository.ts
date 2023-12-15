@@ -1,7 +1,7 @@
-import { ObjectId, Document } from "mongoose";
+import { ObjectId, Document, Types } from "mongoose";
 
 export interface Repository {
-  get(id: ObjectId): Promise<Document>;
+  get(id: Types.ObjectId): Promise<Document>;
   save(document: any): Promise<boolean>;
   list(): Promise<Document[]>;
 }

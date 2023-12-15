@@ -11,6 +11,7 @@ import { Database } from "../infra/database/database";
 import { INTERFACE_TYPES } from "../domain/types/interfaces";
 import container from "./dependencyInjector";
 import { CharactersService } from "../domain/services/characters";
+import logger from "../infra/logger";
 
 class AppServer {
   public app: Express;
@@ -40,13 +41,13 @@ class AppServer {
 
   public start(port: number) {
     this.app.listen(port, async () => {
-      console.log(`Running on ${port}`);
+      logger.info({}, `Running on ${port}`);
       await this.db.connect(this.host, this.user, this.password);
 
       const { charactersService } = this.resolveDependencies();
       this.app.use("/api/v1", apiRouter(charactersService));
       wsRoute(this.wsApp, charactersService);
-      console.log("Database connected");
+      logger.info({}, "Database connected");
     });
   }
 }

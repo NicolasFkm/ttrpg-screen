@@ -11,6 +11,7 @@ const apiRouter = (charactersService: CharactersService): Router => {
 
   router.get("/characters", async (req: Request, res: Response) => {
     const characters = await charactersService.getAllCharactersStatus();
+
     res.status(200).json({
       data: {
         characters,
@@ -36,6 +37,18 @@ const apiRouter = (charactersService: CharactersService): Router => {
       _id: new Types.ObjectId(id),
       ...req.body.character,
     });
+    res.status(200).json({
+      data: {
+        id: updatedCharacter,
+      },
+    });
+  });
+
+  router.put("/characters/:id/stats", async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const stats = req.body.stats;
+
+    const updatedCharacter = await charactersService.updateStats(id, stats);
     res.status(200).json({
       data: {
         id: updatedCharacter,

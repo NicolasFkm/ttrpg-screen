@@ -4,8 +4,11 @@ import { ObjectSchema, date, number, object, string } from "yup";
 export class CharacterSchema {
   static getSchema(): Schema {
     return new Schema({
+      avatar: "String",
       name: "String",
       age: "Number",
+      initiative: "Number",
+      luckPoints: "Number",
       lifePoints: {
         total: "Number",
         current: "Number",
