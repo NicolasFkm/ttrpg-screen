@@ -31,6 +31,7 @@ export type Character = {
 export type Stats = {
   lifePoints?: number;
   manaPoints?: number;
+  initiative?: number;
   defense?: number;
   luckPoints?: number;
 };

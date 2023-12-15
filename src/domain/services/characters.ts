@@ -38,6 +38,8 @@ export class CharactersService implements CharactersServiceInterface {
 
     currentCharacter.manaPoints.current += info.manaPoints ?? 0;
     currentCharacter.lifePoints.current += info.lifePoints ?? 0;
+    currentCharacter.initiative =
+      info.initiative ?? currentCharacter.initiative;
 
     const createdCharacter = await this.characterRepository.save(
       currentCharacter
