@@ -1,1 +1,1 @@
-web: node dist/index.js
+web: node --experimental-specifier-resolution=node dist/index.js

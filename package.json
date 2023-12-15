@@ -8,7 +8,7 @@
     "dev": "node --loader ts-node/esm --trace-warnings src/index.ts",
     "watch": "nodemon",
     "build": "tsc",
-    "start": "ls * -a && node dist/index.js",
+    "start": "node --experimental-specifier-resolution=node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
